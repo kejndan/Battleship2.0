@@ -1,0 +1,9 @@
+# размеры
+SIZE_FIELD = 10
+WIDTH = 72
+HEIGHT = 40
+MEDIUM = SIZE_FIELD*WIDTH//2
+# цвета
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+GREY = (150, 150, 150)
