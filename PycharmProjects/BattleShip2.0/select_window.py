@@ -5,20 +5,32 @@ from pygame.sprite import Group
 
 class SelectWindow:
     def __init__(self, screen, vector):
+        """
+        Данный класс создает окно выбора кораблей
+        :param screen: экран
+        :param vector: 1 - горизонтальные корабли; -1 - вертикальные корабли;
+        """
         self.ships_num = [1, 2, 3, 4]
-        self.ships = []
-        self.rect_ships = []
+        self.ships = [] # содержит корабли
+        self.rect_ships = [] # сооветсвует по индексам списку ships, содержит координаты области каждого из кораблей
         self.screen = screen
         self.vector = vector
+        # координаты расположения окна
         self.x = MEDIUM + 3*(WIDTH//2)
         self.y = HEIGHT*2
 
     def draw_select_window(self):
+        """
+        Данная функция вызывает функцию рисования для каждого корабля из ships
+        """
         for ship in self.ships:
             ship.draw(self.screen)
 
 
     def create_select_ships(self):
+        """
+        Данная функция создает корабли для окна выбора
+        """
         for i in range(3, -1, -1):
             if self.vector == 1:
                 self.rect_ships.append(pygame.Rect(self.x, self.y + (3-i)*HEIGHT, (i+1)*WIDTH//2, HEIGHT))
@@ -30,7 +42,7 @@ class SelectWindow:
 
     def print_num_not_used(self):
         """
-        Функция отображающая количество не использованных корбалей
+        Данная функция отображающая количество не использованных корбалей
         """
         font = pygame.font.SysFont(None, 48)
         for i in range(4):
