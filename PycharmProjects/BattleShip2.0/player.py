@@ -22,8 +22,5 @@ class Player():
 
 
 
-    # def alignment_ships(self):
-
-
 
 
