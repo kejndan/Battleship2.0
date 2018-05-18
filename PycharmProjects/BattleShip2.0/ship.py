@@ -4,7 +4,7 @@ import pygame
 
 
 class Ship(object):
-    def __init__(self, length, x, y, vector, field, screen):
+    def __init__(self, length, x, y, vector,  screen):
         """
         Данный класс создает корабль
         :param length: длина корабля
@@ -18,6 +18,7 @@ class Ship(object):
         self.y = y
         self.vector = vector
         self.length = length
+        self.field = []
         for i in range(self.length):
             if self.length == 1:
                 part = 'O'
@@ -27,10 +28,11 @@ class Ship(object):
                 part = 'E'
             else:
                 part = 'X'
+
             if vector == 1:
-                self.parts.add(PartShip(x + i*WIDTH//2, y, part, field, screen))
+                self.parts.add(PartShip(x + i*WIDTH//2, y, part, self.field, screen))
             elif vector == -1:
-                self.parts.add(PartShip(x, y + i*HEIGHT, part, field, screen))
+                self.parts.add(PartShip(x, y + i*HEIGHT, part, self.field, screen))
 
     def draw(self, screen):
         """
@@ -59,6 +61,9 @@ class Ship(object):
                 for i in range(1, len(part_list)):
                     part_list[i].rect.x = args[0]
                     part_list[i].rect.y = args[1] + i*HEIGHT
+
+
+
 
 
 class PartShip(Sprite):
@@ -99,8 +104,7 @@ class PartShip(Sprite):
             self.part = (self.image, self.rect)
         self.rect.top = y
         self.rect.right = x
-        if field:
-            field[y//HEIGHT][x//(WIDTH//2)] = part_ship
+        field.append(part_ship)
 
     def update(self, *args):
         """

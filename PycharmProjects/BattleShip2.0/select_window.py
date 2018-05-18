@@ -34,10 +34,10 @@ class SelectWindow:
         for i in range(3, -1, -1):
             if self.vector == 1:
                 self.rect_ships.append(pygame.Rect(self.x, self.y + (3-i)*HEIGHT, (i+1)*WIDTH//2, HEIGHT))
-                self.ships.append(Ship(i+1, self.x + WIDTH//2, self.y + (3-i)*HEIGHT, self.vector, 0, self.screen))
+                self.ships.append(Ship(i+1, self.x + WIDTH//2, self.y + (3-i)*HEIGHT, self.vector, self.screen))
             elif self.vector == -1:
                 self.rect_ships.append(pygame.Rect(self.x + (3-i)*WIDTH//2, self.y, WIDTH//2, (i+1)*HEIGHT))
-                self.ships.append(Ship(i+1, self.x + (4-i)*WIDTH//2, self.y, self.vector, 0, self.screen))
+                self.ships.append(Ship(i+1, self.x + (4-i)*WIDTH//2, self.y, self.vector, self.screen))
 
 
     def print_num_not_used(self):

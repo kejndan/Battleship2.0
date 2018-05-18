@@ -1,12 +1,12 @@
 import pygame
 from const import *
-
+from field import Field
 
 class Player():
     def __init__(self, screen):
         self.screen = screen
-        # self.field = Field()
-        # self.field_enemy = Field()
+        self.field = Field()
+        self.field_enemy = Field()
         self.killed = 0
         self.log = []
         self.ships_num = [1, 2, 3, 4]
