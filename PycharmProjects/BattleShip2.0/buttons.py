@@ -2,8 +2,8 @@ from pygame import font, Rect
 from const import *
 
 
-class ButtonTurn(object):
-    def __init__(self, screen):
+class ButtonsSelectWin(object):
+    def __init__(self, screen, msg, height):
         self.screen = screen
 
         self.width, self.height = 10, 10
@@ -11,10 +11,10 @@ class ButtonTurn(object):
         self.text_color = (255, 255, 255)
         self.font = font.SysFont(None, 39)
 
-        self.msg_image = self.font.render("TURN", True, self.text_color, self.button_color)
+        self.msg_image = self.font.render(msg, True, self.text_color, self.button_color)
         self.msg_image_rect = self.msg_image.get_rect()
         self.rect = Rect(MEDIUM + 4*(WIDTH // 2),
-                         HEIGHT * 7,
+                         HEIGHT * height,
                          self.msg_image_rect.width,
                          self.msg_image_rect.height)
         self.msg_image_rect.center = self.rect.center

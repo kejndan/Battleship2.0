@@ -19,6 +19,7 @@ class Ship(object):
         self.vector = vector
         self.length = length
         self.field = []
+        self.log = []
         for i in range(self.length):
             if self.length == 1:
                 part = 'O'
@@ -30,9 +31,9 @@ class Ship(object):
                 part = 'X'
 
             if vector == 1:
-                self.parts.add(PartShip(x + i*WIDTH//2, y, part, self.field, screen))
+                self.parts.add(PartShip(x + i*WIDTH//2, y, part, self.field, self.log, screen))
             elif vector == -1:
-                self.parts.add(PartShip(x, y + i*HEIGHT, part, self.field, screen))
+                self.parts.add(PartShip(x, y + i*HEIGHT, part, self.field, self.log, screen))
 
     def draw(self, screen):
         """
@@ -73,7 +74,7 @@ class PartShip(Sprite):
     __m_img = pygame.image.load("img/m.png")
     __one_p = pygame.image.load("img/one.png")
 
-    def __init__(self, x, y, part_ship, field, screen):
+    def __init__(self, x, y, part_ship, field, log, screen):
         """
         Данный класс создает часть корабля
         :param x, y: координаты начала корабля
@@ -113,6 +114,31 @@ class PartShip(Sprite):
         self.rect.x -= self.rect.width / 2
         self.rect.y -= self.rect.height / 2
 
+
+def ship_cpy(ship,  screen):
+    return Ship(ship.length, ship.x, ship.y, ship.vector,  screen)
+
+def check_aoe(x,y, length, field, vector):
+    """
+    Данная функция проверяет можно ли поставить корабль в этом месте
+    :param x, y: координаты курсора мыши куда нужно поставить начало корабля
+    :param length: длина корабля
+    :param field: массив где храниться корабли
+    :return: True - можно поставить корабль; False - нельзя поставить корабль
+    """
+    # Проверяем стоит другой корабль в радиусе одной ячейки
+    for i in range(-1, length+1):
+        for j in range(-1, 2):
+            try:
+                if y+i == -1 or x+j == -1:
+                    raise IndexError
+                if vector == -1 and (x+j > 10 or y+i > 10 or field[y+i][x+j] != ' '):
+                        return False
+                elif vector == 1 and (x + i > 10 or y + j > 10 or field[y+j][x+i] != ' '):
+                        return False
+            except IndexError:
+                pass
+    return True
 
 
 
