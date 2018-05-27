@@ -1,9 +1,9 @@
 from const import *
 import pygame
 from ship import Ship
-from pygame.sprite import Group
 
-class SelectWindow:
+
+class SelectWindow(object):
     def __init__(self, screen, vector):
         """
         Данный класс создает окно выбора кораблей
@@ -11,8 +11,8 @@ class SelectWindow:
         :param vector: 1 - горизонтальные корабли; -1 - вертикальные корабли;
         """
         self.ships_num = [1, 2, 3, 4]
-        self.ships = [] # содержит корабли
-        self.rect_ships = [] # сооветсвует по индексам списку ships, содержит координаты области каждого из кораблей
+        self.ships = []  # содержит корабли
+        self.rect_ships = []  # сооветсвует по индексам списку ships, содержит координаты области каждого из кораблей
         self.screen = screen
         self.vector = vector
         # координаты расположения окна
@@ -26,7 +26,6 @@ class SelectWindow:
         for ship in self.ships:
             ship.draw(self.screen)
 
-
     def create_select_ships(self):
         """
         Данная функция создает корабли для окна выбора
@@ -38,7 +37,6 @@ class SelectWindow:
             elif self.vector == -1:
                 self.rect_ships.append(pygame.Rect(self.x + (3-i)*WIDTH//2, self.y, WIDTH//2, (i+1)*HEIGHT))
                 self.ships.append(Ship(i+1, self.x + (4-i)*WIDTH//2, self.y, self.vector, self.screen))
-
 
     def print_num_not_used(self):
         """
@@ -58,3 +56,7 @@ class SelectWindow:
                 num_rect.top = HEIGHT + 5
                 num_rect.right = MEDIUM + 136 + i * WIDTH // 2
                 self.screen.blit(num_image, num_rect)
+
+
+if __name__ == '__main__':
+    print('This is select window model')

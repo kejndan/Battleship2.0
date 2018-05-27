@@ -10,7 +10,6 @@ class Ship(object):
         :param length: длина корабля
         :param x, y: координаты начала корабля
         :param vector: 1 - горизонтальный корабль; -1 - вертикальный корабль
-        :param field: массив в который данный корабль записывается
         :param screen: экран
         """
         self.parts = Group()
@@ -31,9 +30,9 @@ class Ship(object):
                 part = 'X'
 
             if vector == 1:
-                self.parts.add(PartShip(x + i*WIDTH//2, y, part, self.field, self.log, screen))
+                self.parts.add(PartShip(x + i*WIDTH//2, y, part, self.field, screen))
             elif vector == -1:
-                self.parts.add(PartShip(x, y + i*HEIGHT, part, self.field, self.log, screen))
+                self.parts.add(PartShip(x, y + i*HEIGHT, part, self.field, screen))
 
     def draw(self, screen):
         """
@@ -47,7 +46,7 @@ class Ship(object):
         Данная функция обновляет координаты корабля
         :param args: координаты на которые переместился корабль
         """
-        if not args: # если args пустой
+        if not args:  # если args пустой
             self.parts.update(*args)
         else:
             part_list = list(self.parts)
@@ -55,7 +54,7 @@ class Ship(object):
             rect.x = args[0]
             rect.y = args[1]
             if self.vector == 1:
-                for i in range(1,len(part_list)):
+                for i in range(1, len(part_list)):
                     part_list[i].rect.x = args[0] + i*WIDTH/2
                     part_list[i].rect.y = args[1]
             else:
@@ -64,17 +63,15 @@ class Ship(object):
                     part_list[i].rect.y = args[1] + i*HEIGHT
 
 
-
-
-
 class PartShip(Sprite):
 
     __start_img = pygame.image.load("img/start.png")
     __end_img = pygame.image.load("img/e.png")
     __m_img = pygame.image.load("img/m.png")
     __one_p = pygame.image.load("img/one.png")
-
-    def __init__(self, x, y, part_ship, field, log, screen):
+    __hit_img = pygame.image.load("img/hit.png")
+    __miss_img = pygame.image.load("img/miss.png")
+    def __init__(self, x, y, part_ship, field, screen):
         """
         Данный класс создает часть корабля
         :param x, y: координаты начала корабля
@@ -103,9 +100,16 @@ class PartShip(Sprite):
             self.image = self.__m_img
             self.rect = self.image.get_rect()
             self.part = (self.image, self.rect)
+        elif part_ship == 'H':
+            self.image = self.__hit_img
+            self.rect = self.image.get_rect()
+        elif part_ship == 'M':
+            self.image = self.__miss_img
+            self.rect = self.image.get_rect()
         self.rect.top = y
         self.rect.right = x
-        field.append(part_ship)
+        if part_ship != 'H' and part_ship != 'M':
+            field.append(part_ship)
 
     def update(self, *args):
         """
@@ -115,15 +119,22 @@ class PartShip(Sprite):
         self.rect.y -= self.rect.height / 2
 
 
+
 def ship_cpy(ship,  screen):
+    """
+    Данная функция создает копию объекта Ship
+    :return: возращает новый объект Ship
+    """
     return Ship(ship.length, ship.x, ship.y, ship.vector,  screen)
 
-def check_aoe(x,y, length, field, vector):
+
+def check_aoe(x, y, length, field, vector):
     """
     Данная функция проверяет можно ли поставить корабль в этом месте
     :param x, y: координаты курсора мыши куда нужно поставить начало корабля
     :param length: длина корабля
     :param field: массив где храниться корабли
+    :param vector: 1 - горизонтальный корабль; -1 - вертикальный корабль
     :return: True - можно поставить корабль; False - нельзя поставить корабль
     """
     # Проверяем стоит другой корабль в радиусе одной ячейки
@@ -140,6 +151,5 @@ def check_aoe(x,y, length, field, vector):
                 pass
     return True
 
-
-
-
+if __name__ == '__main__':
+    print('This is ship model')

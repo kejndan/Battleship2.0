@@ -9,7 +9,6 @@ def draw_grid(surface, num_field):
     :param num_field: номер полуполскости; 0 - левая; 1 - правая
     """
     # горизонтальные линии
-    MEDIUM = SIZE_FIELD*WIDTH/2
     start = [num_field*MEDIUM, 0]
     end = [MEDIUM + num_field*MEDIUM, 0]
     for i in range(SIZE_FIELD):
@@ -27,13 +26,16 @@ def draw_grid(surface, num_field):
     pygame.draw.line(surface, WHITE, [MEDIUM, 0], [MEDIUM, SIZE_FIELD*HEIGHT], 1)
 
 
+# def update_screen_select(back_img, screen):
+#     """
+#     Обновляет экран
+#     """
+#
+#
+#
+# def full_draw_select_win(select_win, turn_button, auto_button, play_button):
 
 
 
-
-
-
-
-
-
-
+if __name__ == '__main__':
+    print('This is graphic model')
