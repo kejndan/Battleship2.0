@@ -12,6 +12,7 @@ from AI import AI
 from menu import Menu
 from event import Event
 from select import Select
+from battlefield import BattleField
 
 
 
@@ -19,14 +20,7 @@ from select import Select
 
 
 
-def swap(player):
-    if player == player_2:
-        player = player_1
-        enemy_player = player_2
-    else:
-        player = player_2
-        enemy_player = player_1
-    return (player, enemy_player)
+
 
 if __name__ == '__main__':
     pygame.init()
@@ -41,6 +35,7 @@ if __name__ == '__main__':
     player_2 = Player(screen)
     Event = Event(screen, player_1)
     AI = AI(Settings.complexity)
+    BF = BattleField(screen, player_1, player_2)
 
 
 
@@ -51,7 +46,7 @@ if __name__ == '__main__':
 
     # background_image = pygame.image.load("img/water-texture_(23).jpg").convert()
 
-    # ready_button = ButtonReady(screen)
+
     # update_screen_select(background_image, screen)
     # full_draw_select_win(select_win, turn_button, auto_button, play_button)
     # pygame.display.flip()
@@ -72,7 +67,18 @@ if __name__ == '__main__':
                         Event.event_settings(Menu,pos)
                 elif Event.select:
                     if event.type == pygame.MOUSEBUTTONDOWN:
-                        ship = Event.select_window(pos, Select, event,  AI, player_1, player_2)
+                        Event.select_window(pos, Select, event,  AI, player_1, player_2, BF)
+                elif Event.game:
+                    if Event.ready:
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            Event.attack(pos, BF)
+                            BF.update()
+                    else:
+                        BF.draw_preparation_field(BF)
+                        if event.type == pygame.MOUSEBUTTONDOWN and BF.ready_button.rect.collidepoint(pos):
+                            Event.preparation(BF)
+
+
                 if Event.drag:
                     Event.drag_n_drop(event, Event.ship,  Select, pos)
 
@@ -92,30 +98,8 @@ if __name__ == '__main__':
             #     if game:
             #         pos = pygame.mouse.get_pos()
             #         if not ready:
-            #             screen.blit(background_image, (0, 0))
-            #             draw_grid(screen, 0)
-            #             draw_grid(screen, 1)
-            #             ready_button.draw_button()
-            #             pygame.display.flip()
-            #             if event.type == pygame.MOUSEBUTTONDOWN and ready_button.rect.collidepoint(pos):
             #
-            #                 screen.blit(background_image, (0, 0))
-            #                 draw_grid(screen, 0)
-            #                 draw_grid(screen, 1)
-            #                 for ship in player.ships:
-            #                     ship.draw(screen)
-            #                 ready = True
-            #                 pygame.display.flip()
-            #             player, enemy_player = swap(player)
             #         else:
             #             if event.type == pygame.MOUSEBUTTONDOWN:
-            #                 if not player.attack(pos, enemy_player):
-            #                     ready = False
-            #                 screen.blit(background_image, (0, 0))
-            #                 draw_grid(screen, 0)
-            #                 draw_grid(screen, 1)
-            #                 for ship in player.ships:
-            #                     ship.draw(screen)
-            #                 for part in player.parts_enemy_ship:
-            #                     screen.blit(part.image, (part.rect.x, part.rect.y))
+
                 pygame.display.flip()

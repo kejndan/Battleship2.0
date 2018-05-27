@@ -1,6 +1,7 @@
 from const import *
 import pygame
 from ship import check_aoe, ship_cpy
+from graphic import draw_grid
 class Event(object):
     def __init__(self, screen, player):
         self.screen = screen
@@ -90,7 +91,7 @@ class Event(object):
                 ship.update()
                 self.drag = True
 
-    def select_window(self, pos, Select, event,  AI, player_1, player_2):
+    def select_window(self, pos, Select, event,  AI, player_1, player_2, BF):
         if self.in_select_window(pos):
             for i in range(4):
                 if Select.select_win.rect_ships[i].collidepoint(pos):
@@ -110,8 +111,18 @@ class Event(object):
                 Select.update()
                 pygame.display.flip()
             else:
-                self.player = player_1
+                BF.swap()
                 self.ready = False
                 self.game = True
+                self.select = False
+    def attack(self, pos, BF):
+        if not BF.player.attack(pos, BF.enemy_player):
+            self.ready = False
+
+    def preparation(self, BF):
+        BF.swap()
+        BF.update()
+        self.ready = True
+        pygame.display.flip()
 
 

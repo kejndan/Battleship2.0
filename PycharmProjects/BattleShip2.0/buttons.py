@@ -36,12 +36,12 @@ class ButtonReady(ButtonsSelectWin):
     def __init__(self, screen):
         self.screen = screen
         self.screen_rect = self.screen.get_rect()
-        self.button_color = GREEN
+        self.button_color = COLOR_MENU_BUTTON
         self.text_color = BLACK
         self.font = font.SysFont(None, 50)
         self.msg_image = self.font.render("READY", True, self.text_color, self.button_color)
         self.msg_image_rect = self.msg_image.get_rect()
-        self.rect = Rect(0, 0, self.msg_image_rect.width, self.msg_image_rect.height)
+        self.rect = Rect(0, 0, self.msg_image_rect.width*1.5, self.msg_image_rect.height*1.5)
         self.rect.center = self.screen_rect.center
         self.msg_image_rect.center = self.rect.center
 

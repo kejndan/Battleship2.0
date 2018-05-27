@@ -19,6 +19,7 @@ class Ship(object):
         self.length = length
         self.field = []
         self.log = []
+        self.num_deck = length
         for i in range(self.length):
             if self.length == 1:
                 part = 'O'
@@ -84,6 +85,8 @@ class PartShip(Sprite):
         """
         super().__init__()
         self.screen = screen
+        self.x = x
+        self.y = y
         if part_ship == 'O':
             self.image = self.__one_p
             self.rect = self.image.get_rect()
@@ -106,8 +109,8 @@ class PartShip(Sprite):
         elif part_ship == 'M':
             self.image = self.__miss_img
             self.rect = self.image.get_rect()
-        self.rect.top = y
-        self.rect.right = x
+        self.rect.top = self.y
+        self.rect.right = self.x
         if part_ship != 'H' and part_ship != 'M':
             field.append(part_ship)
 
