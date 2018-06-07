@@ -41,17 +41,31 @@ class AI(object):
 
 
     def auto_attack(self, player, Menu):
-        random_num = randint(1, 100)
+        """
+        Данная функция сама выбирает точку для атаки
+        :param player: игрок который будет атакован
+        :param Menu.complexity: уровень сложности игры
+        :return: точку для атаки
+        """
+        random_num = randint(1, 100) # выбираем случайное число
         if (Menu.complexity == 'EASY' and random_num <= 10 or
                 Menu.complexity == 'MEDIUM' and random_num <= 25 or
                 Menu.complexity == 'HARD' and random_num <= 40):
+            # если это число меньше чем определенное число, то мы берем точку в которой находится корабль
             point = choice(player.log)
         else:
+            # если нет, то берем случайную точку на карте
             y = randint(0, self.size - 1)
             x = randint(0, self.size - 1)
             point = (x, y)
         return (point[0]*(WIDTH//2)+MEDIUM, point[1]*HEIGHT)
+
     def AOE_attack(self, point):
+        """
+        Данный генератор берет точку левее, правее, выше и ниже относительно переданной точки
+        :param point: точка на карте
+        :return: смещенную точку
+        """
         for i in [(-1,0),(1,0),(0,1),(0,-1)]:
             x = point[0] + i[0]*(WIDTH//2)
             y = point[1] + i[1]*HEIGHT
@@ -59,6 +73,12 @@ class AI(object):
                 yield (x,y)
 
     def search_ship(self, pos, player):
+        """
+        Данная функция ищёт корабль у которого есть палуба с координатами pos
+        :param pos: координаты точки
+        :param player: игрок у которого она ищет данный корабль
+        :return: корабль
+        """
         for ship in player.ships:
             for part in ship.parts:
                 if part.rect.collidepoint(pos):
