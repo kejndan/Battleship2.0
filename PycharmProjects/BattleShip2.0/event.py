@@ -4,6 +4,9 @@ from ship import check_aoe, ship_cpy
 from graphic import draw_grid
 class Event(object):
     def __init__(self, screen, player):
+        """
+        Данный класс имеет методы для определенных событий
+        """
         self.screen = screen
         self.settings = False
         self.menu = True
@@ -19,23 +22,31 @@ class Event(object):
         self.ship = 0
 
     def event_menu(self, Menu, pos, Select):
-        if Menu.button_play.msg_image_rect.collidepoint(pos):
+        """
+        Данная функция проверяет события в меню
+        :param pos: координаты клика мыши
+        """
+        if Menu.button_play.msg_image_rect.collidepoint(pos): #если игрок кликнул по кнопки PLAY
             self.select = True
             self.menu = False
             Menu.game_type = Menu.game_types[Menu.button_gt_i]
             Menu.complexity = Menu.complexity_types[Menu.button_comp_i]
             Select.update()
-        elif Menu.button_set.msg_image_rect.collidepoint(pos):
+        elif Menu.button_set.msg_image_rect.collidepoint(pos): # если игрок кликнул по кнопки SETTINGS
             self.menu = False
             self.settings = True
             Menu.draw_settings()
 
     def event_settings(self, Menu, pos):
-        if Menu.button_back.rect.collidepoint(pos):
+        """
+        Данная функция проверяет события в окне настроек
+        :param pos: координаты клика мыши
+        """
+        if Menu.button_back.rect.collidepoint(pos): # если игрок кликнул по кнопки BACK
             self.menu = True
             self.settings = False
             Menu.draw_menu()
-        else:
+        else: # если игрок кликнул по кнопка в назад-вперед
             if Menu.button_next_comp.rect.collidepoint(pos):
                 Menu.button_comp_i += 1
             elif Menu.button_back_comp.rect.collidepoint(pos):
@@ -53,12 +64,23 @@ class Event(object):
             Menu.draw_settings()
 
     def in_select_window(self, pos):
+        """
+        Данная функция проверяет произошел ли клик в окне выбора корабля
+        :param pos: координаты клика
+        :return: True - если клик произошел внутри окна; False - если клик произошел вне окна
+        """
         if MEDIUM + 3 * WIDTH // 2 <= pos[0] <= MEDIUM + 7 * (WIDTH // 2) and HEIGHT * 2 <= pos[1] <= HEIGHT * 6:
             return True
         else:
             return False
 
     def drag_n_drop(self, event, ship,  Select,  pos):
+        """
+        Данная функция реализует перетаскивание кораблей
+        :param event: событие
+        :param ship: корабль который будет перемещаться
+        :param pos: координаты мыши
+        """
         if self.drag:
             pos = pygame.mouse.get_pos()
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
@@ -97,19 +119,23 @@ class Event(object):
                 self.drag = True
 
     def select_window(self, pos, Select, event,  AI, player_1, player_2, BF, Menu):
-        if self.in_select_window(pos):
+        """
+        Данная функция проверяет события в окне выбора кораблей
+        :param pos: координаты клика
+        """
+        if self.in_select_window(pos): # если клик произошел в окне с кораблями
             for i in range(4):
                 if Select.select_win.rect_ships[i].collidepoint(pos):
                     self.ship = ship_cpy(Select.select_win.ships[i], self.screen)
                     self.drag_n_drop(event, self.ship,  Select,  pos)
-        elif Select.turn_button.rect.collidepoint(pos):
+        elif Select.turn_button.rect.collidepoint(pos): # если был совершен клик по кнопки TURN
             Select.turn_select_win(self.player)
-        elif Select.auto_button.rect.collidepoint(pos):
+        elif Select.auto_button.rect.collidepoint(pos): # если был совершен клик по кнопки AUTO
             self.ships_num = Select.automatic_placement(self.player, AI)
             for field in self.player.field:
                 print(field)
             print()
-        elif len(self.player.ships) == 10 and Select.play_button.rect.collidepoint(pos):
+        elif len(self.player.ships) == 10 and Select.play_button.rect.collidepoint(pos): # если был совершен клик по кнопки PLAY
             if self.player == player_1:
                 self.player = player_2
                 if Menu.game_type == 'PvP':
@@ -131,7 +157,11 @@ class Event(object):
                 self.game = True
                 self.select = False
     def attack(self, pos, BF):
-        print(pos[1]//HEIGHT, pos[0]//(WIDTH//2)-10)
+        """
+        Данная функция стреляет по вражескому кораблю
+        :param pos: координаты атаки
+        :return: () - если игрок промахнулся; pos - если игрок попал
+        """
         if BF.enemy_player.field[pos[1]//HEIGHT][pos[0]//(WIDTH//2)-10] in ('S', 'X', 'E', ' ', 'O'):
             if not BF.player.attack(pos, BF.enemy_player):
                 self.ready = False
@@ -143,9 +173,11 @@ class Event(object):
 
 
     def preparation(self, BF):
+        """Данная функция делает подготовку для хода следующего игрока"""
         BF.swap()
         BF.update()
         self.ready = True
         pygame.display.flip()
+
 
 
