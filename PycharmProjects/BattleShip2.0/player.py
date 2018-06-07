@@ -9,6 +9,9 @@ class Player(object):
     miss_img = pygame.image.load("img/miss.png")
     name_parts = ('S','X','E', 'O')
     def __init__(self, screen, name):
+        """
+        Класс игрока
+        """
         self.screen = screen
         self.name = name
         self.killed = 0
@@ -20,6 +23,12 @@ class Player(object):
         self.field_enemy = [[' '] * SIZE_FIELD for i in range(SIZE_FIELD)]
 
     def attack(self, pos, enemy):
+        """
+        Данная функция атакует по переданным координатам
+        :param pos: координаты атаки
+        :param enemy: вражеский игрок
+        :return: True - если игрок попал; False - если игрок промахнулся
+        """
         x = pos[0]//(WIDTH//2)
         y = pos[1]//HEIGHT
         hit_ship = None
@@ -28,14 +37,8 @@ class Player(object):
                 if part.rect.collidepoint((pos[0]-MEDIUM, pos[1])):
                     ship.num_deck -= 1
                     part.image = part.hit_img
-                    print((x-10,y))
-                    for i in range(10):
-                        print(enemy.field[i])
                     del enemy.log[enemy.log.index((x-10,y))]
                     hit_ship = ship
-
-
-
 
         if enemy.field[y][x-10] in self.name_parts:
             flag  = True
