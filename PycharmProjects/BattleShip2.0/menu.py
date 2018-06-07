@@ -7,6 +7,9 @@ class Menu(object):
     complexity_types = ['EASY', 'MEDIUM', 'HARD']
     game_types = ['PvP', 'PvE']
     def __init__(self, screen):
+        """
+        Данный класс инициализирует все кнопки которые находятся в меню
+        """
         self.screen = screen
         self.screen_rect = self.screen.get_rect()
         self.background = pygame.image.load("img/bg_menu.png")
@@ -39,11 +42,18 @@ class Menu(object):
 
 
     def draw_menu(self):
+        """
+        Данная функция рисует меню
+        """
         self.screen.blit(self.background, (0, 0))
         self.screen.blit(self.title, self.title_rect)
         self.button_play.draw_button()
         self.button_set.draw_button()
     def draw_settings(self):
+        """
+        Данная функция рисует окно настроек
+        :return:
+        """
         self.screen.blit(self.background, (0, 0))
         self.screen.blit(self.title, self.title_rect)
         self.screen.blit(self.print_game_type, self.print_game_type_rect)
