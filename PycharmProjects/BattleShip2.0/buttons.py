@@ -34,6 +34,10 @@ class ButtonsSelectWin(object):
 
 class ButtonReady(ButtonsSelectWin):
     def __init__(self, screen):
+        """
+        Данный класс создает кнопку проверки готовности в игре
+        Также он наследует функцию отрисовки кнопки из ButtonsSelectWin
+        """
         self.screen = screen
         self.screen_rect = self.screen.get_rect()
         self.button_color = COLOR_MENU_BUTTON
@@ -47,6 +51,12 @@ class ButtonReady(ButtonsSelectWin):
 
 class ButtonMenu(ButtonsSelectWin):
     def __init__(self, screen, msg, row):
+        """
+        Данный класс создает кнопки для меню
+        Также он наследует функцию отрисовки кнопки из ButtonsSelectWin
+        :param msg: текст на кнопки
+        :param row: строка на которой находится кнопка
+        """
         self.screen = screen
         self.screen_rect = self.screen.get_rect()
         self.button_color = COLOR_MENU_BUTTON
@@ -61,6 +71,12 @@ class ButtonMenu(ButtonsSelectWin):
 
 class ButtonsSettings(Sprite):
     def __init__(self, screen, type, row):
+        """
+        Данный класс создает кнопки назад-вперед в окне настроек
+        Также он наследует класс Sprite
+        :param type: функция кнопки
+        :param row: строка на которой находится кнопка
+        """
         super().__init__()
         self.screen = screen
         self.screen_rect = self.screen.get_rect()
@@ -74,6 +90,9 @@ class ButtonsSettings(Sprite):
         self.rect.x += type*150
         self.rect.top += row*60
     def draw(self):
+        """
+        Данная функция рисует кнопку
+        """
         self.screen.blit(self.image, self.rect)
 
 
