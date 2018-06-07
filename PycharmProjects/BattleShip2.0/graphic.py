@@ -25,6 +25,19 @@ def draw_grid(surface, num_field):
     # разделительная черта
     pygame.draw.line(surface, WHITE, [MEDIUM, 0], [MEDIUM, SIZE_FIELD*HEIGHT], 1)
 
+def draw_congratulation(player, screen, menu):
+    back_img = pygame.image.load("img/congr.png")
+    screen_rect = screen.get_rect()
+    font_title = pygame.font.SysFont(None, 45)
+    title = font_title.render("Congratulations to the {} with the victory".format(player.name), True, BLACK, COLOR_MENU_BUTTON)
+    title_rect = title.get_rect()
+    title_rect.center = screen_rect.center
+    title_rect.top-=50
+    screen.blit(back_img, (0, 0))
+    screen.blit(title, title_rect)
+    menu.button_restart.draw_button()
+
+
 
 # def update_screen_select(back_img, screen):
 #     """

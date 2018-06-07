@@ -12,6 +12,9 @@ class Event(object):
         self.player = player
         self.ready = False
         self.game = False
+        self.first_stage_attack = True
+        self.second_stage_attack = False
+        self.third_stage_attack = False
         self.ships_num = [1, 2, 3, 4]
         self.ship = 0
 
@@ -19,6 +22,8 @@ class Event(object):
         if Menu.button_play.msg_image_rect.collidepoint(pos):
             self.select = True
             self.menu = False
+            Menu.game_type = Menu.game_types[Menu.button_gt_i]
+            Menu.complexity = Menu.complexity_types[Menu.button_comp_i]
             Select.update()
         elif Menu.button_set.msg_image_rect.collidepoint(pos):
             self.menu = False
@@ -91,7 +96,7 @@ class Event(object):
                 ship.update()
                 self.drag = True
 
-    def select_window(self, pos, Select, event,  AI, player_1, player_2, BF):
+    def select_window(self, pos, Select, event,  AI, player_1, player_2, BF, Menu):
         if self.in_select_window(pos):
             for i in range(4):
                 if Select.select_win.rect_ships[i].collidepoint(pos):
@@ -107,17 +112,35 @@ class Event(object):
         elif len(self.player.ships) == 10 and Select.play_button.rect.collidepoint(pos):
             if self.player == player_1:
                 self.player = player_2
-                Select.select_win.ships_num = self.ships_num = player_2.ships_num
-                Select.update()
-                pygame.display.flip()
+                if Menu.game_type == 'PvP':
+                    Select.select_win.ships_num = self.ships_num = player_2.ships_num
+                    Select.update()
+                    pygame.display.flip()
+                else:
+                    self.ships_num = Select.automatic_placement(self.player, AI)
+                    BF.draw_preparation_field()
+                    pygame.display.flip()
+                    BF.swap()
+                    self.ready = False
+                    self.game = True
+                    self.select = False
+
             else:
                 BF.swap()
                 self.ready = False
                 self.game = True
                 self.select = False
     def attack(self, pos, BF):
-        if not BF.player.attack(pos, BF.enemy_player):
-            self.ready = False
+        print(pos[1]//HEIGHT, pos[0]//(WIDTH//2)-10)
+        if BF.enemy_player.field[pos[1]//HEIGHT][pos[0]//(WIDTH//2)-10] in ('S', 'X', 'E', ' ', 'O'):
+            if not BF.player.attack(pos, BF.enemy_player):
+                self.ready = False
+                return ()
+            else:
+                return pos
+        else:
+            return ()
+
 
     def preparation(self, BF):
         BF.swap()

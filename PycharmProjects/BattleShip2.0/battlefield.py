@@ -20,13 +20,25 @@ class BattleField(object):
             self.screen.blit(part.image, (part.rect.x, part.rect.y))
         for part in self.enemy_player.parts_enemy_ship:
             self.screen.blit(part.image, (part.rect.x-MEDIUM, part.rect.y))
+        display.flip()
 
-    def swap(self):
-        self.player, self.enemy_player = self.enemy_player, self.player
-
-    def draw_preparation_field(self, BF):
+    def update2(self):
         self.screen.blit(self.background_img, (0, 0))
         draw_grid(self.screen, 0)
         draw_grid(self.screen, 1)
-        BF.ready_button.draw_button()
+        for ship in self.enemy_player.ships:
+            ship.draw(self.screen)
+        for part in self.enemy_player.parts_enemy_ship:
+            self.screen.blit(part.image, (part.rect.x, part.rect.y))
+        for part in self.player.parts_enemy_ship:
+            self.screen.blit(part.image, (part.rect.x-MEDIUM, part.rect.y))
+        display.flip()
+    def swap(self):
+        self.player, self.enemy_player = self.enemy_player, self.player
+
+    def draw_preparation_field(self):
+        self.screen.blit(self.background_img, (0, 0))
+        draw_grid(self.screen, 0)
+        draw_grid(self.screen, 1)
+        self.ready_button.draw_button()
         display.flip()

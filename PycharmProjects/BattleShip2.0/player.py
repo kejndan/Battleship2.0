@@ -4,11 +4,13 @@ from ship import PartShip
 
 
 class Player(object):
-    __kill_img = pygame.image.load("img/kill.png")
-    __hit_img = pygame.image.load("img/hit.png")
-    __miss_img = pygame.image.load("img/miss.png")
-    def __init__(self, screen):
+    kill_img = pygame.image.load("img/kill.png")
+    hit_img = pygame.image.load("img/hit.png")
+    miss_img = pygame.image.load("img/miss.png")
+    name_parts = ('S','X','E', 'O')
+    def __init__(self, screen, name):
         self.screen = screen
+        self.name = name
         self.killed = 0
         self.log = []
         self.ships_num = [1, 2, 3, 4]
@@ -24,32 +26,36 @@ class Player(object):
         for ship in enemy.ships:
             for part in ship.parts:
                 if part.rect.collidepoint((pos[0]-MEDIUM, pos[1])):
-                    ship.field[(ship.x+MEDIUM)//(WIDTH//2)-1 - x + ship.y//HEIGHT - y] = 'H'
-                    part.image = self.__hit_img
-                    print((x-10,y) in enemy.log)
+                    ship.num_deck -= 1
+                    part.image = part.hit_img
+                    print((x-10,y))
+                    for i in range(10):
+                        print(enemy.field[i])
                     del enemy.log[enemy.log.index((x-10,y))]
                     hit_ship = ship
 
 
 
 
-        if enemy.field[y][x-10] != ' ':
+        if enemy.field[y][x-10] in self.name_parts:
             flag  = True
             self.field_enemy[y][x - 10] = 'H'
+            enemy.field[y][x-10] = 'H'
             self.parts_enemy_ship.append(
-            PartShip((x + 1) * (WIDTH // 2), y * HEIGHT, 'H', self.parts_enemy_ship, self.screen))
-            if hit_ship.field.count('H') == hit_ship.length:
+            PartShip((x+1)*(WIDTH//2), y*HEIGHT, 'H', self.parts_enemy_ship, self.screen))
+            if hit_ship.num_deck == 0:
+                self.killed += 1
                 for part in hit_ship.parts:
-                    hit_ship.field[(hit_ship.x+MEDIUM)//(WIDTH//2)-1 - x + hit_ship.y//HEIGHT - y] = 'K'
-                    part.image = self.__kill_img
+                    part.image = part.kill_img
                     for part_hited in self.parts_enemy_ship:
                         if part_hited.x == part.x + MEDIUM and part_hited.y == part.y:
-                            part_hited.image = self.__kill_img
+                            part_hited.image = self.kill_img
         else:
             flag = False
             self.field_enemy[y][x - 10] = 'M'
+            enemy.field[y][x - 10] = 'M'
             self.parts_enemy_ship.append(
-            PartShip((x + 1) * (WIDTH // 2), y * HEIGHT, 'M', self.parts_enemy_ship, self.screen))
+            PartShip((x+1)*(WIDTH//2), y*HEIGHT, 'M', self.parts_enemy_ship, self.screen))
 
         return flag
 

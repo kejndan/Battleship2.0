@@ -34,6 +34,7 @@ class Menu(object):
         self.button_next_gt = ButtonsSettings(self.screen, 1, 0)
         self.button_back_gt = ButtonsSettings(self.screen, -1, 0)
         self.button_back = ButtonMenu(screen,'BACK', 2)
+        self.button_restart = ButtonMenu(screen, 'LEAVE THE GAME', 2)
 
 
 

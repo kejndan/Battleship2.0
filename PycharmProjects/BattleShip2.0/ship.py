@@ -66,12 +66,13 @@ class Ship(object):
 
 class PartShip(Sprite):
 
-    __start_img = pygame.image.load("img/start.png")
-    __end_img = pygame.image.load("img/e.png")
-    __m_img = pygame.image.load("img/m.png")
-    __one_p = pygame.image.load("img/one.png")
-    __hit_img = pygame.image.load("img/hit.png")
-    __miss_img = pygame.image.load("img/miss.png")
+    start_img = pygame.image.load("img/start.png")
+    end_img = pygame.image.load("img/e.png")
+    m_img = pygame.image.load("img/m.png")
+    one_p = pygame.image.load("img/one.png")
+    hit_img = pygame.image.load("img/hit.png")
+    miss_img = pygame.image.load("img/miss.png")
+    kill_img = pygame.image.load("img/kill.png")
     def __init__(self, x, y, part_ship, field, screen):
         """
         Данный класс создает часть корабля
@@ -88,26 +89,26 @@ class PartShip(Sprite):
         self.x = x
         self.y = y
         if part_ship == 'O':
-            self.image = self.__one_p
+            self.image = self.one_p
             self.rect = self.image.get_rect()
             self.part = (self.image, self.rect)
         elif part_ship == 'S':
-            self.image = self.__start_img
+            self.image = self.start_img
             self.rect = self.image.get_rect()
             self.part = (self.image, self.rect)
         elif part_ship == 'E':
-            self.image = self.__end_img
+            self.image = self.end_img
             self.rect = self.image.get_rect()
             self.part = (self.image, self.rect)
         elif part_ship == 'X':
-            self.image = self.__m_img
+            self.image = self.m_img
             self.rect = self.image.get_rect()
             self.part = (self.image, self.rect)
         elif part_ship == 'H':
-            self.image = self.__hit_img
+            self.image = self.hit_img
             self.rect = self.image.get_rect()
         elif part_ship == 'M':
-            self.image = self.__miss_img
+            self.image = self.miss_img
             self.rect = self.image.get_rect()
         self.rect.top = self.y
         self.rect.right = self.x
@@ -144,7 +145,7 @@ def check_aoe(x, y, length, field, vector):
     for i in range(-1, length+1):
         for j in range(-1, 2):
             try:
-                if y+i == -1 or x+j == -1:
+                if vector == -1 and (y+i == -1 or x+j == -1) or vector == 1 and (y+j == -1 or x+i == -1):
                     raise IndexError
                 if vector == -1 and (x+j > 10 or y+i > 10 or field[y+i][x+j] != ' '):
                         return False
