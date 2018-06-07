@@ -26,6 +26,10 @@ def draw_grid(surface, num_field):
     pygame.draw.line(surface, WHITE, [MEDIUM, 0], [MEDIUM, SIZE_FIELD*HEIGHT], 1)
 
 def draw_congratulation(player, screen, menu):
+    """
+    Данная функция отрисовывает окно победы
+    :param player: игрок который победил
+    """
     back_img = pygame.image.load("img/congr.png")
     screen_rect = screen.get_rect()
     font_title = pygame.font.SysFont(None, 45)
@@ -36,17 +40,6 @@ def draw_congratulation(player, screen, menu):
     screen.blit(back_img, (0, 0))
     screen.blit(title, title_rect)
     menu.button_restart.draw_button()
-
-
-
-# def update_screen_select(back_img, screen):
-#     """
-#     Обновляет экран
-#     """
-#
-#
-#
-# def full_draw_select_win(select_win, turn_button, auto_button, play_button):
 
 
 
